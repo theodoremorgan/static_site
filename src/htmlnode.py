@@ -19,6 +19,8 @@ class HTMLNode:
         #for prop in self.props:
         #    attributes += " " + prop + "=\"" + self.props[prop] + "\""
         #return attributes
+        if not self.props:
+            return ""
         attributes = "".join(list(map(lambda x,y: f" {x}=\"{y}\"", self.props.keys(), self.props.values())))
         return attributes
 
@@ -31,3 +33,19 @@ class HTMLNode:
         return string
     
 
+class LeafNode(HTMLNode):
+    def __init__(self, tag, value, props = None):
+        if value:
+            super().__init__(tag, value, None, props)
+        else:
+            raise ValueError("Node Value is required.")
+
+    def to_html(self):
+        if not self.value:
+            raise ValueError("Node Value is required")
+        if not self.tag:
+            return self.value
+        html_open = f"<{self.tag}{super().props_to_html()}>"
+        html_value = f"{self.value}"
+        html_close = f"</{self.tag}>"
+        return html_open + html_value + html_close
