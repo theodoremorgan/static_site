@@ -35,17 +35,38 @@ class HTMLNode:
 
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, props = None):
-        if value:
-            super().__init__(tag, value, None, props)
-        else:
-            raise ValueError("Node Value is required.")
+        if not value:
+            raise ValueError("Value for \'value\' attribute is required for LeafNode.")
+        super().__init__(tag, value, None, props)
 
     def to_html(self):
         if not self.value:
-            raise ValueError("Node Value is required")
+            raise ValueError("Value for \'value\' attribute is required for LeafNode..")
         if not self.tag:
             return self.value
         html_open = f"<{self.tag}{super().props_to_html()}>"
         html_value = f"{self.value}"
         html_close = f"</{self.tag}>"
         return html_open + html_value + html_close
+
+class ParentNode(HTMLNode):
+    def __init__(self, tag, children, props = None):
+        if not children:
+            raise ValueError("Value for \'children\' attribute is required for ParentNode.")
+        if not isinstance(children, list):
+            raise ValueError("Value for \'children\' attribute must be a list.")
+        super().__init__(tag, None, children, props)
+        
+    def to_html(self):
+        if not self.tag:
+            raise ValueError("Value for \'tag\' attribute is required for to_html method on ParentNode.")
+        html = f"<{self.tag}{super().props_to_html()}>" + "".join(list(map(lambda x: x.to_html(), self.children))) + f"</{self.tag}>"
+        #html = f"<{self.tag}{super().props_to_html()}>" 
+        #for child in self.children:
+        #    if isinstance(child, LeafNode):
+        #        html += child.to_html()
+        #    if isinstance(child, ParentNode):
+        #        html += child.to_html()
+        #html += f"</{self.tag}>"
+        return html
+

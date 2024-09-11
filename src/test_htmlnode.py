@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 class HTMLNodeUnitTest(unittest.TestCase):
 
@@ -35,3 +35,48 @@ class HTMLNodeUnitTest(unittest.TestCase):
 
         self.assertEqual(html1, "<p>This is a paragraph of text.</p>")
         self.assertEqual(html2, "<a href=\"https://www.google.com\">Click me!</a>")
+
+    def test_leafnode_to_html_no_tag(self):
+        leaf1 = LeafNode("", "This is a paragraph of text.")
+        leaf2 = LeafNode(None, "This is a paragraph of text.")
+        self.assertEqual("This is a paragraph of text.", leaf1.to_html())
+        self.assertEqual("This is a paragraph of text.", leaf2.to_html())
+
+    def test_leafnode_enforce_value(self):
+        with self.assertRaises(ValueError):
+            leaf1 = LeafNode("p", None)
+        with self.assertRaises(ValueError):
+            leaf2 = LeafNode("a", "")
+
+    def test_parentnode_to_html(self):
+        parent1 = ParentNode(
+                "p",
+                [
+                    LeafNode("b", "Bold text"),
+                    LeafNode(None, "Normal text"),
+                    LeafNode("i", "italic text"),
+                    LeafNode(None, "Normal text"),
+                ],
+        )
+        parent2 = ParentNode(
+                "p",
+                [
+                    ParentNode("p",
+                        [
+                            LeafNode("b", "Bold text"),
+                            LeafNode(None, "Normal text"),
+                            LeafNode("i", "italic text"),
+                            LeafNode(None, "Normal text"),
+                            ]
+                        ),
+                    LeafNode(None, "Normal text"),
+                    LeafNode("i", "italic text"),
+                    LeafNode(None, "Normal text"),
+                    ]
+                )
+        self.assertEqual(parent1.to_html(), "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>")
+        self.assertEqual(parent2.to_html(), "<p><p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>Normal text<i>italic text</i>Normal text</p>")
+    def test_parentnode_to_html_enforce_children(self):
+        with self.assertRaises(ValueError):
+            parent = ParentNode("p", [], {})
+
