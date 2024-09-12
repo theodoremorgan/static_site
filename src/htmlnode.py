@@ -12,7 +12,7 @@ class HTMLNode:
             return False
 
     def to_html(self):
-        raise NotImplementedError
+        raise NotImplementedError("to_html handled within sub-classes")
 
     def props_to_html(self):
         #attributes = ""
@@ -35,8 +35,6 @@ class HTMLNode:
 
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, props = None):
-        if not value:
-            raise ValueError("Value for \'value\' attribute is required for LeafNode.")
         super().__init__(tag, value, None, props)
 
     def to_html(self):

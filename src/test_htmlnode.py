@@ -42,12 +42,6 @@ class HTMLNodeUnitTest(unittest.TestCase):
         self.assertEqual("This is a paragraph of text.", leaf1.to_html())
         self.assertEqual("This is a paragraph of text.", leaf2.to_html())
 
-    def test_leafnode_enforce_value(self):
-        with self.assertRaises(ValueError):
-            leaf1 = LeafNode("p", None)
-        with self.assertRaises(ValueError):
-            leaf2 = LeafNode("a", "")
-
     def test_parentnode_to_html(self):
         parent1 = ParentNode(
                 "p",
@@ -80,3 +74,5 @@ class HTMLNodeUnitTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             parent = ParentNode("p", [], {})
 
+if __name__ == "__main__":
+    unittest.main()
