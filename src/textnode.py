@@ -1,4 +1,4 @@
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import LeafNode
 
 class TextNode:
     def __init__(self, text, text_type, url = None):
