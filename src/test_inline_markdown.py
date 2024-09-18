@@ -1,5 +1,5 @@
 import unittest
-from nodefunctions import (
+from inline_markdown import (
         split_nodes_delimiter, 
         extract_markdown_images,
         extract_markdown_links, 
@@ -17,7 +17,7 @@ from textnode import (
         text_type_image,
         )
 
-class TestNodeFunctions(unittest.TestCase):
+class TestInlineMarkdown(unittest.TestCase):
     def test_split_nodes_delimiter_code(self):
         node = TextNode("This is text with a `code block` word", text_type_text)
         actual_nodes = split_nodes_delimiter([node], "`", text_type_code)
