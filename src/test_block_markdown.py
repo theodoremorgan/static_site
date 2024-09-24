@@ -9,6 +9,7 @@ from block_markdown import (
     block_type_olist,
     block_type_ulist,
     block_type_quote,
+    extract_title,
 )
 
 
@@ -170,6 +171,17 @@ this is paragraph text
             "<div><pre><code>This is a code block\n</code></pre><p>this is paragraph text</p></div>",
         )
 
+    def test_extracttitle(self):
+        md = """
+# this is an h1
 
+this is paragraph text
+
+## this is an h2
+"""
+        title = extract_title(md)
+        expected_title = "this is an h1"
+        self.assertEqual(title, expected_title)
+        
 if __name__ == "__main__":
     unittest.main()
