@@ -24,7 +24,7 @@ class TextNode:
 
 #function to convert from textnode to html(leaf)node 
 def text_node_to_html_node(text_node):
-    valid_types = ["text", "bold", "italic", "code", "link", "image"]
+    valid_types = [text_type_text, text_type_bold, text_type_italic, text_type_code, text_type_link, text_type_image]
     if text_node.text_type not in valid_types:
         raise ValueError("text_type of the text node must be one of: text, bold, italic, code, link, image"
     )
